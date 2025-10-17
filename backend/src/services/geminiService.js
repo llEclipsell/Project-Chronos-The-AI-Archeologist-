@@ -1,4 +1,4 @@
-// backend/src/services/geminiService.js
+
 import axios from "axios";
 import { reconstructPrompt } from "../utils/promptTemplates.js";
 
