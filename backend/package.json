@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "axios": "^1.12.2",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.19.1",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-node": "^11.1.0",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
+    "supertest": "^7.1.4"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "lint": "eslint . --ext .js",
+    "test": "jest",
+    "dev":  "concurrently -n NODE,PYTHON -c \"yellow,blue\" \"npm run server\" \"npm run python\"",
+    "server": "nodemon server.js",
+    "python": "cd ../python && python server.py"
+  },
+  "type": "module"
+}
