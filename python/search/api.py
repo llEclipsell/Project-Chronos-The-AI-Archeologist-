@@ -12,13 +12,19 @@ def search_endpoint():
     """
     data = request.get_json()
     reconstructed_text = data.get('reconstructedText')
+    original_fragment = data.get('originalFragment')
+    context_sources = data.get('contextSources', [])
 
     if not reconstructed_text:
         return jsonify({"error": "Missing reconstructedText in request body."}), 400
 
     try:
         # Call the core search function
-        search_results = perform_search(reconstructed_text)
+        search_results = perform_search(
+            reconstructed_text=reconstructed_text,
+            original_query=original_fragment,
+            context_keywords=context_sources
+        )
 
         # Return the results
         return jsonify({"results": search_results}), 200

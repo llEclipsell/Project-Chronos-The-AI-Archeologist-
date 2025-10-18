@@ -1,4 +1,3 @@
-// frontend/src/pages/Home.jsx
 import React, { useState } from 'react'
 import { Grid, Title, Stack, Text } from '@mantine/core'
 import InputFragment from '../components/InputFragment'
@@ -45,7 +44,11 @@ export default function Home() {
         const searchResp = await fetch(`${API_BASE}/api/search`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ reconstructedText })
+          body: JSON.stringify({ 
+            reconstructedText,
+            originalFragment: fragment,
+            contextSources: sources 
+          })
         })
         if (!searchResp.ok) {
           const errBody = await searchResp.json().catch(()=>({}))
