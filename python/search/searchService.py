@@ -35,7 +35,7 @@ def perform_search(reconstructed_text, original_query=None, context_keywords=Non
         'key': api_key,
         'cx': cx_id,
         'q': final_query,
-        'num': 5  # Set to retrieve the top 5 results
+        'num': 3  # Set to retrieve the top 5 results
     }
 
     try:

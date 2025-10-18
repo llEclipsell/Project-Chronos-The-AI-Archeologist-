@@ -1,11 +1,16 @@
-import { AppShell, Text, Anchor } from '@mantine/core'
+import { Box, Text, Anchor, Container } from '@mantine/core';
 
 export default function Footer() {
   return (
-    <AppShell height={60} p="md">
-      <Text size="sm" c="dimmed" align="center">
-        Project Chronos — AI Archeologist · Built with ❤️ · <Anchor href="https://your-org-or-team.example" target="_blank">About</Anchor>
-      </Text>
-    </AppShell>
-  )
+    <Box component="footer" h={60} mt="xl" style={{ borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}>
+       <Container size="xl" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+         <Text size="sm" c="dimmed" ta="center">
+           Project Chronos — AI Archeologist ·{' '}
+           <Anchor href="#" target="_blank" size="sm">
+             About
+           </Anchor>
+         </Text>
+       </Container>
+    </Box>
+  );
 }

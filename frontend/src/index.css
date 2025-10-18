@@ -1,9 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto:wght@300;400;700&display=swap');
+
+:root {
+  --font-heading: 'Orbitron', sans-serif; /* Techy/Sci-fi heading */
+  --font-body: 'Roboto', sans-serif;     /* Clean body text */
+
+  --color-background: #fdfaf3;         /* Lighter parchment/sand */
+  --color-surface: #ffffff;            /* Card backgrounds */
+  --color-text-primary: #3a3a3a;       /* Darker text */
+  --color-text-secondary: #707070;     /* Dimmed text */
+  --color-primary: #00796b;            /* Teal accent */
+  --color-accent: #bfa05b;             /* Gold/Sand accent */
+  --color-border: #e0e0e0;            /* Subtle borders */
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.05);
+}
+
 html, body, #root {
   height: 100%;
   margin: 0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: #fbfaf6; /* subtle parchment-like tint */
-  color: #111;
+  font-family: var(--font-body);
+  background: var(--color-background);
+  color: var(--color-text-primary);
 }
 
-.dim { color: #666; }
+body {
+  line-height: 1.6;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+.dim { color: var(--color-text-secondary); }
+
+/* Make container take remaining height */
+.main-container {
+  flex-grow: 1;
+}
+
+/* Custom scrollbar (optional, for aesthetics) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}

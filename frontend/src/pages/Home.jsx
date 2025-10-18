@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Grid, Title, Stack, Text } from '@mantine/core'
+import { Grid, Title, Stack, Text, Paper, Loader, Alert } from '@mantine/core'
+import { IconAlertCircle } from '@tabler/icons-react';
 import InputFragment from '../components/InputFragment'
 import ReconstructionCard from '../components/ReconstructionCard'
 import SourceCard from '../components/SourceCard'
@@ -16,6 +17,7 @@ export default function Home() {
   // Run reconstruction, then search automatically
   async function handleReport(fragment, sources = []) {
     setError(null)
+    setReport(null);
     setLoading(true)
     setSearching(false)
     try {
@@ -87,37 +89,69 @@ export default function Home() {
 
   return (
     <>
-      <Title order={2} mb="md">Project Chronos — AI Archeologist</Title>
-      <Grid>
-        <Grid.Col span={6}>
-          <Stack>
-            <InputFragment onReport={handleReport} />
-            <div style={{ marginTop: 12 }}>
-              <small style={{ color: '#666' }}>
-                Tip: keep fragments under ~800 characters for reliable results.
-              </small>
-              {loading && <Text size="sm" c="dimmed" mt="xs">Generating reconstruction…</Text>}
-              {searching && <Text size="sm" c="dimmed" mt="xs">Searching web sources…</Text>}
-              {error && <Text size="sm" c="red" mt="xs">{error}</Text>}
-            </div>
-          </Stack>
-        </Grid.Col>
+      <Stack gap="xl"> {/* Use Stack for vertical spacing */}
+          {/* Section 1: Introduction */}
+          <Paper p="xl" radius="md" withBorder style={{ backgroundColor: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+            <Title order={2} ta="center" mb="md">Unearth the Past, Understand the Present</Title>
+            <Text ta="center" c="dimmed" size="lg">
+              Project Chronos bridges the gap between obscure internet fragments and modern understanding.
+              Paste snippets of old slang, abbreviations, or cultural references, and let our AI Archeologist
+              reconstruct their meaning in clear, contemporary language, backed by web sources.
+            </Text>
+          </Paper>
 
-        <Grid.Col span={6}>
-          {report ? (
-            <>
-              <ReconstructionCard report={report} />
-              <div style={{ marginTop: 12 }}>
-                {report.sources?.map((s, i) => (
-                  <SourceCard key={i} source={s} />
-                ))}
-              </div>
-            </>
-          ) : (
-            <div style={{ color: '#777' }}>Generate a reconstruction to see the preview here.</div>
-          )}
-        </Grid.Col>
-      </Grid>
+          {/* Section 2 & 3: Input and Output Side-by-Side */}
+          <Grid gutter="xl">
+            {/* Left Column: Input */}
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Paper p="lg" radius="md" withBorder style={{ backgroundColor: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+                <Title order={3} mb="lg">Enter Fragment</Title>
+                <InputFragment onReport={handleReport} />
+                <Text size="xs" c="dimmed" mt="md">
+                  Tip: Keep fragments under ~800 characters for best results. Add URLs or keywords as context sources.
+                </Text>
+                {/* Loading/Error Indicators */}
+                <Stack gap="xs" mt="md">
+                  {loading && <Loader size="sm" type="dots" />}
+                  {searching && <Text size="sm" c="dimmed">Searching web sources…</Text>}
+                  {error && (
+                    <Alert icon={<IconAlertCircle size="1rem" />} title="Error" color="red" radius="sm">
+                      {error}
+                    </Alert>
+                  )}
+                </Stack>
+              </Paper>
+            </Grid.Col>
+
+            {/* Right Column: Report Preview */}
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <Stack>
+                {(loading) ? (
+                    <Paper p="lg" radius="md" withBorder style={{ minHeight: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-surface)' }}>
+                        <Stack align="center">
+                          <Loader />
+                          <Text c="dimmed">Generating reconstruction...</Text>
+                        </Stack>
+                    </Paper>
+                ) : report ? (
+                  <>
+                    <ReconstructionCard report={report} />
+                    <Title order={4} mt="lg" mb="sm">Potential Sources</Title>
+                    {searching && <Loader size="sm" type="dots" />}
+                    {!searching && report.sources?.length === 0 && <Text c="dimmed" size="sm">No web sources found or search still running.</Text>}
+                    {report.sources?.map((s, i) => (
+                      <SourceCard key={i} source={s} />
+                    ))}
+                  </>
+                ) : !error ? ( // Only show placeholder if not loading and no error
+                    <Paper p="xl" radius="md" withBorder style={{ minHeight: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--color-surface)', borderStyle: 'dashed', borderColor: 'var(--color-border)' }}>
+                        <Text c="dimmed" ta="center">Your reconstruction report and sources will appear here.</Text>
+                    </Paper>
+                ) : null /* Don't show placeholder if there was an error */}
+              </Stack>
+            </Grid.Col>
+          </Grid>
+        </Stack>
     </>
   )
 }
