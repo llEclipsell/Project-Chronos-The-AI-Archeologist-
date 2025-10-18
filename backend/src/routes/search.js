@@ -1,19 +1,29 @@
 import express from "express";
-import { performSearch } from "../services/searchService.js";
+import axios from "axios";
 
 const router = express.Router();
 
-// GET /api/search?q=topic
-router.get("/", async (req, res) => {
+/**
+ * POST /api/search
+ * Expects body: { reconstructedText: "..." } (this matches your python/search/api.py)
+ * Forwards to python server and returns the python response.
+ */
+router.post("/", async (req, res) => {
   try {
-    const { q } = req.query;
-    if (!q) return res.status(400).json({ error: "Missing search query" });
+    // Forward the same body to Python service
+    const payload = req.body || {};
 
-    const results = await performSearch(q);
-    res.json(results);
+    // call python search endpoint
+    const pythonResp = await axios.post("http://127.0.0.1:5001/api/search", payload, {
+      timeout: 15000,
+    });
+
+    // Forward python's JSON response back to the client unchanged
+    return res.json(pythonResp.data);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Search failed" });
+    console.error("Search proxy error:", err.response?.data || err.message);
+    const status = err.response?.status || 500;
+    return res.status(status).json({ error: "Search failed", details: err.response?.data || err.message });
   }
 });
 
